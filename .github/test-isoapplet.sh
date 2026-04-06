@@ -96,6 +96,8 @@ popd
 # random data to be signed
 dd if=/dev/random of=/tmp/data.bin bs=300 count=1
 if [ "$isoapplet_version" = "v0" ]; then
+	$VALGRIND opensc-tool --list-algorithms
+	$VALGRIND pkcs11-tool -M
 	# sign & verify using secp256r1 key
 	$VALGRIND pkcs11-tool -l -p 123456 -s -m ECDSA-SHA1 -d 3 -i /tmp/data.bin -o /tmp/data.sig
 	$VALGRIND pkcs11-tool --verify -m ECDSA-SHA1 -d 3 -i /tmp/data.bin --signature-file /tmp/data.sig
@@ -107,6 +109,8 @@ if [ "$isoapplet_version" = "v0" ]; then
 	$VALGRIND pkcs11-tool -l -p 123456 -s -m ECDSA-SHA1 -d 4 -i /tmp/data.bin -o /tmp/data.sig
 	$VALGRIND pkcs11-tool --verify -m ECDSA-SHA1 -d 4 -i /tmp/data.bin --signature-file /tmp/data.sig
 elif [ "$isoapplet_version" = "v1" ]; then
+	$VALGRIND opensc-tool --list-algorithms
+	$VALGRIND pkcs11-tool -M
 	# sign & verify using secp256r1 key
 	$VALGRIND pkcs11-tool -l -p 123456 -s -m ECDSA -d 5 -i /tmp/data.bin -o /tmp/data.sig
 	$VALGRIND pkcs11-tool --verify -m ECDSA -d 5 -i /tmp/data.bin --signature-file /tmp/data.sig
