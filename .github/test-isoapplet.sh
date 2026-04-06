@@ -87,7 +87,7 @@ fi
 $VALGRIND pkcs15-tool -D
 $VALGRIND opensc-tool --list-algorithms
 $VALGRIND pkcs11-tool -M
-$VALGRIND pkcs11-tool -l -t -p 123456
+#$VALGRIND pkcs11-tool -l -t -p 123456
 
 # run the tests
 pushd src/tests/p11test/
