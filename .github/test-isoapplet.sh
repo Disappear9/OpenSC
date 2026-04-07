@@ -108,15 +108,15 @@ if [ "$isoapplet_version" = "v0" ]; then
 	$VALGRIND pkcs11-tool --verify -m ECDSA-SHA1 -d 4 -i /tmp/data.bin --signature-file /tmp/data.sig
 elif [ "$isoapplet_version" = "v1" ]; then
 	# sign & verify using secp256r1 key
-	$VALGRIND pkcs11-tool -l -p 123456 -s -m ECDSA -d 5 -i /tmp/data.bin -o /tmp/data.sig
-	$VALGRIND pkcs11-tool --verify -m ECDSA -d 5 -i /tmp/data.bin --signature-file /tmp/data.sig
+	$VALGRIND pkcs11-tool -l -p 123456 -s -m ECDSA-SHA1 -d 5 -i /tmp/data.bin -o /tmp/data.sig
+	$VALGRIND pkcs11-tool --verify -m ECDSA-SHA1 -d 5 -i /tmp/data.bin --signature-file /tmp/data.sig
 	# import, sign & verify using another secp256r1 key
 	openssl ecparam -name secp256r1 -genkey -noout -out /tmp/ECprivKey.pem
 	openssl ec -in /tmp/ECprivKey.pem -pubout -out /tmp/ECpubKey.pem
 	$VALGRIND pkcs11-tool -l -p 123456 -w /tmp/ECprivKey.pem -y privkey -d 6
 	$VALGRIND pkcs11-tool -l -p 123456 -w /tmp/ECpubKey.pem -y pubkey -d 6
-	$VALGRIND pkcs11-tool -l -p 123456 -s -m ECDSA -d 6 -i /tmp/data.bin -o /tmp/data.sig
-	$VALGRIND pkcs11-tool --verify -m ECDSA -d 6 -i /tmp/data.bin --signature-file /tmp/data.sig
+	$VALGRIND pkcs11-tool -l -p 123456 -s -m ECDSA-SHA1 -d 6 -i /tmp/data.bin -o /tmp/data.sig
+	$VALGRIND pkcs11-tool --verify -m ECDSA-SHA1 -d 6 -i /tmp/data.bin --signature-file /tmp/data.sig
 else
 	echo "Unknown IsoApplet version: $isoapplet_version"
 	exit 1
