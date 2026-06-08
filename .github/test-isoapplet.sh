@@ -42,7 +42,7 @@ echo "com.licel.jcardsim.vsmartcard.port=35963" >> isoapplet_jcardsim.cfg
 
 
 # start the applet and run couple of commands against that
-java -noverify -cp IsoApplet/src/:jcardsim/target/jcardsim-3.0.5-SNAPSHOT.jar com.licel.jcardsim.remote.VSmartCard isoapplet_jcardsim.cfg >/dev/null &
+java -noverify -cp IsoApplet/src/:jcardsim/target/jcardsim-3.0.5-SNAPSHOT.jar com.licel.jcardsim.remote.VSmartCard isoapplet_jcardsim.cfg >java-jcardsim.log &
 PID=$!
 sleep 5
 
@@ -66,6 +66,7 @@ OPENSC_CONF=opensc.conf pkcs11-tool -L | tee opensc.log
 grep "uninitialized" opensc.log
 
 $VALGRIND opensc-tool --card-driver default --send-apdu 80b800001a0cf276a288bcfba69d34f310010cf276a288bcfba69d34f3100100
+$VALGRIND cat java-jcardsim.log
 $VALGRIND opensc-tool -n
 $VALGRIND pkcs15-init --create-pkcs15 --so-pin 123456 --so-puk 0123456789abcdef
 $VALGRIND pkcs15-tool --change-pin --pin 123456 --new-pin 654321
